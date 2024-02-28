@@ -1,5 +1,8 @@
 ﻿#include <iostream>
 #include <functional> //описание классов функторов для программ
+#include <algorithm>
+#include <vector>
+
 //1
 int Summ(int a, int b)
 {
@@ -52,7 +55,7 @@ void Fo2(int& j)
 	j = 9;
 }
 
-int main() {
+int mainEx() {
 	setlocale(LC_ALL, "Russian");
 	int n; 
 	//1
@@ -85,6 +88,101 @@ int main() {
 	{
 		std::cout << arr[i];
 	}
+
+	return 0;
+}
+
+
+
+
+
+
+#include <random>
+
+bool More(int a, int b) //чтобы было задом наперед
+{
+	return a > b;
+}
+
+struct Runner
+{
+	int id;
+	double result;
+	std::string Name;
+};
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+
+	//создали коллекцию
+	std::vector<int> arr; 
+	for (int i = 0; i < 20; i++)
+	{
+		arr.push_back(i + 1);
+	}
+	//перемешиваем
+	std::shuffle(arr.begin(), arr.end(), std::random_device()); //шафл перемешивает элементы коллекции в произвольном порядке с помощью методов коллекции, те что в скобочках
+	for (auto& j : arr)
+	{
+		std::cout << j << ", ";
+	}
+	std::cout << "\b\b \n";
+
+	//мортирует коллекцию по возрастанию если знает как сравнить соседние элементы на меньше. В остальных случаях требуется передать правила сравнения
+	std::sort(arr.begin(), arr.end(), More); //море чтобы сортировка была от большего к меньшему
+	for (auto& j : arr)
+	{
+		std::cout << j << ", ";
+	}
+	std::cout << "\b\b \n" << "\n";
+
+	//сортировка пацанов по параметрам
+	std::vector<Runner> lBoard
+	{
+		{1,123.4, "Joe"},
+		{2,122.6, "Ken"},
+		{4,115.3, "Tomas"},
+		{6,145.7,"Alex"},
+		{7,115.1,"Gregory"}
+	};
+	std::cout << "сортировка по именам\n";
+	for (const auto& j : lBoard)
+	{
+		std::cout << "ID: " << j.id << ' ';
+		std::cout << "Name: " << j.Name << ' ';
+		std::cout << "Result: " << j.result << '\n';
+	}
+	std::cout << "\n";
+
+
+	//анонимные функции - лямбда выражения
+	auto funk = [](int a) ->bool
+		{
+			if (a % 2)
+			{
+				return a % 2;
+			}
+			else
+			{
+				return false;
+			}
+		};
+	std::cout << funk(4) << "\n\n";
+
+	//сортировка лямбдой
+	std::sort(lBoard.begin(), lBoard.end(), 
+		[](const Runner& a, const Runner& b)->bool
+		{
+			return a.result < b.result;
+		});
+	std::cout << "сортировка по числам\n";
+	for (const auto& j : lBoard)
+	{
+		std::cout << "ID: " << j.id << ' ';
+		std::cout << "Name: " << j.Name << ' ';
+		std::cout << "Result: " << j.result << '\n';
+	};
+
 
 	return 0;
 }
